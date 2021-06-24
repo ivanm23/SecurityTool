@@ -1,4 +1,5 @@
-import socket, netifaces
+import netifaces
+import socket
 
 # Getting local ip
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

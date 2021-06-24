@@ -29,4 +29,4 @@ def process_sniffed_packet(packet):
         print("\n\n[+] Possible username/password > " + str(login_info) + "\n\n")
 
 
-sniff("Ethernet")
+sniff("eth0")

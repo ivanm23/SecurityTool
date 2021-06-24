@@ -27,14 +27,14 @@ class Main_Screen:
         self.progress_label = tk.Label(self.host_frame, text='')
         self.progress_label.config(font=("Arial", 11))
         self.progress_label.grid()
-        self.window.geometry("512x412")
+        self.window.geometry("563x453")
         # self.create_entry_label_pairs(self.info_frame, 'ip', 'os', 'type')  //OPTIONAL CLEAN PAIR GENERATION
 
         self.host_ip_entry_label = tk.Label(self.info_frame, text='Host IP:')  # creating IP entry/label pair
         self.host_ip_entry_label.grid()
         self.host_ip_entry = tk.Entry(self.info_frame)
         self.host_ip_entry.grid()
-        self.set_entry_text(self.host_ip_entry, "192.168.1.2") # testing purposes
+        self.set_entry_text(self.host_ip_entry, "192.168.1.15") # testing purposes
         self.host_ip_entry.config(state='disabled')
 
         self.host_os_entry_label = tk.Label(self.info_frame, text='Host OS:')  # creating OS entry/label pair
@@ -59,10 +59,11 @@ class Main_Screen:
                                           command=self.start_arp_spoof_thread)
         self.arp_spoof_button.grid(pady=30) # for testing purposes, should be disabled
 
+        self.arp_spoof_stop_button = tk.Button(self.info_frame, text="Stop ARP \n spoofer",  # creating the spoof button
+                                          state='disabled')
+        self.arp_spoof_stop_button.grid(pady=30)  # for testing purposes, should be disabled
 
         self.window.mainloop() # start Main GUI loop
-
-
     # def create_entry_label_pairs(self, frame, *fields):
     #     tk.Label(frame, text='').grid()
     #
@@ -132,6 +133,10 @@ class Main_Screen:
         arp_spoof_thread = threading.Thread(target=self.arp_spoof)
         arp_spoof_thread.daemon = True
         arp_spoof_thread.start()
+        self.arp_spoof_stop_button.configure(state='active')
+        self.arp_spoof_button.configure(state='disabled')
+
+
 
     # unique thread checker?
     def check_get_host_thread(self):
@@ -141,10 +146,6 @@ class Main_Screen:
             self.progressbar.stop()
             #self.arp_spoof_button.grid(pady=30) # do this in the final version
             self.progressbar.grid_forget()
-
-    def raise_exception(self):
-        raise BaseException("Stopped spoofing")
-
 
 if __name__ == '__main__':
     app = Main_Screen()
